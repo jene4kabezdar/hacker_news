@@ -14,6 +14,7 @@ function fetchItems(ids) {
 
 function App() {
     const [stories, setStories] = useState([]);
+    const [toggleMain, setToggleMain] = useState(true);
 
     useEffect(() => {
         fetch(`${URI}topstories.json?print=pretty`)
@@ -30,7 +31,7 @@ function App() {
     }, []);
 
     const storiesPanel = stories.map(
-        story => <Story key={story.id} id={story.id} title={story.title} score={story.score} by={story.by} time={story.time}/>
+        story => <Story key={story.id} title={story.title} score={story.score} by={story.by} time={story.time}/>
     )
 
     const newsPanel = stories.map(
@@ -69,10 +70,10 @@ function App() {
             <div className="w-1/2 items-center mt-4">
                 <div className="flex justify-between">
                     <h1 className="text-2xl">Hacker News</h1>
+                    <button onClick={() => setToggleMain(!toggleMain)}>{toggleMain ? 'Показать страницы новостей' : 'Показать превью новостей'}</button>
                     <SelectSort changeValue={event => {sortMainPanel(event.target.value)}}/>
                 </div>
-                {storiesPanel}
-                {newsPanel}
+                {toggleMain ? storiesPanel : newsPanel}
             </div>
         </div>
     );
